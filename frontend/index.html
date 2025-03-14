@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kütüphane Yönetim Sistemi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            background-color: #f8f9fa;
+            margin-right: 5px;
+        }
+
+        .tab.active {
+            background-color: #fff;
+            border-color: #ddd;
+            border-bottom-color: #fff;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        form {
+            display: grid;
+            grid-gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: white;
+        }
+
+        .durum-mevcut {
+            background-color: #2ecc71;
+        }
+
+        .durum-oduncte {
+            background-color: #e74c3c;
+        }
+
+        .durum-bulunmuyor {
+            background-color: #7f8c8d;
+        }
+
+        .msg {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Kütüphane Yönetim Sistemi</h1>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="kitap-ekle">Kitap Ekle</div>
+            <div class="tab" data-tab="uye-ekle">Üye Ekle</div>
+            <div class="tab" data-tab="odunc-islemler">Ödünç İşlemleri</div>
+            <div class="tab" data-tab="kitaplar-listesi">Kitaplar</div>
+            <div class="tab" data-tab="uye-kitaplar">Üye Kitapları</div>
+        </div>
+
+        <div id="message" class="msg" style="display: none;"></div>
+
+        <div class="tab-content active" id="kitap-ekle">
+            <form id="kitapForm">
+                <div>
+                    <label for="isbn">ISBN:</label>
+                    <input type="number" id="isbn" required>
+                </div>
+                <div>
+                    <label for="baslik">Başlık:</label>
+                    <input type="text" id="baslik" required>
+                </div>
+                <div>
+                    <label for="yazar">Yazar:</label>
+                    <input type="text" id="yazar" required>
+                </div>
+                <div>
+                    <label for="yayinYili">Yayın Yılı:</label>
+                    <input type="number" id="yayinYili" min="1000" max="2100" required>
+                </div>
+                <div>
+                    <label for="kitapTuru">Kitap Türü:</label>
+                    <select id="kitapTuru" required>
+                        <option value="bilim">Bilim</option>
+                        <option value="roman">Roman</option>
+                        <option value="tarih">Tarih</option>
+                        <option value="dunyaKlasikleri">Dünya Klasikleri</option>
+                        <option value="psikoloji">Psikoloji</option>
+                        <option value="genclik">Gençlik</option>
+                        <option value="gerilim">Gerilim</option>
+                        <option value="kisiselGelisim">Kişisel Gelişim</option>
+                        <option value="felsefe">Felsefe</option>
+                        <option value="siyaset">Siyaset</option>
+                        <option value="fantastik">Fantastik</option>
+                        <option value="cocuk">Çocuk</option>
+                        <option value="polisiye">Polisiye</option>
+                        <option value="siir">Şiir</option>
+                        <option value="macera">Macera</option>
+                        <option value="edebiyat">Edebiyat</option>
+                        <option value="bilimKurgu">Bilim Kurgu</option>
+                        <option value="hikaye">Hikaye</option>
+                        <option value="sosyoloji">Sosyoloji</option>
+                        <option value="biyografi">Biyografi</option>
+                        <option value="klasikler">Klasikler</option>
+                        <option value="arastirma">Araştırma</option>
+                        <option value="deneme">Deneme</option>
+                        <option value="ekonomi">Ekonomi</option>
+                        <option value="saglik">Sağlık</option>
+                        <option value="mizah">Mizah</option>
+                        <option value="mektup">Mektup</option>
+                        <option value="masal">Masal</option>
+                        <option value="tiyatro">Tiyatro</option>
+                        <option value="cizgiRoman">Çizgi Roman</option>
+                        <option value="egitim">Eğitim</option>
+                        <option value="mitoloji">Mitoloji</option>
+                        <option value="hukuk">Hukuk</option>
+                        <option value="sanat">Sanat</option>
+                        <option value="antropoloji">Antropoloji</option>
+                        <option value="spor">Spor</option>
+                        <option value="gezi">Gezi</option>
+                        <option value="dergi">Dergi</option>
+                        <option value="bilgisayar">Bilgisayar</option>
+                        <option value="aile">Aile</option>
+                        <option value="etimoloji">Etimoloji</option>
+                        <option value="elestiri">Eleştiri</option>
+                        <option value="sinema">Sinema</option>
+                        <option value="hobi">Hobi</option>
+                        <option value="yemek">Yemek</option>
+                        <option value="senaryo">Senaryo</option>
+                        <option value="roportaj">Röportaj</option>
+                        <option value="medya">Medya</option>
+                        <option value="astroloji">Astroloji</option>
+                        <option value="sozluk">Sözlük</option>
+                        <option value="cografya">Coğrafya</option>
+                        <option value="astronomi">Astronomi</option>
+                    </select>
+                </div>
+                <button type="submit">Kitap Ekle</button>
+            </form>
+        </div>
+
+        <div class="tab-content" id="uye-ekle">
+            <form id="uyeForm">
+                <div>
+                    <label for="ad">Ad:</label>
+                    <input type="text" id="ad" required>
+                </div>
+                <div>
+                    <label for="soyad">Soyad:</label>
+                    <input type="text" id="soyad" required>
+                </div>
+                <button type="submit">Üye Ekle</button>
+            </form>
+        </div>
+
+        <div class="tab-content" id="odunc-islemler">
+            <form id="oduncForm">
+                <div>
+                    <label for="islemTipi">İşlem Tipi:</label>
+                    <select id="islemTipi" required>
+                        <option value="odunc">Ödünç Al</option>
+                        <option value="iade">İade Et</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="uyeNo">Üye No:</label>
+                    <input type="number" id="uyeNo" required>
+                </div>
+                <div>
+                    <label for="kitapISBN">ISBN:</label>
+                    <input type="number" id="kitapISBN" required>
+                </div>
+                <button type="submit">İşlemi Gerçekleştir</button>
+            </form>
+        </div>
+
+        <div class="tab-content" id="kitaplar-listesi">
+            <button id="refreshKitaplar">Yenile</button>
+            <div id="kitaplarListesi">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ISBN</th>
+                            <th>Başlık</th>
+                            <th>Yazar</th>
+                            <th>Yayın Yılı</th>
+                            <th>Tür</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kitaplarTablosu">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-content" id="uye-kitaplar">
+            <div>
+                <label for="uyeNoSorgu">Üye No:</label>
+                <input type="number" id="uyeNoSorgu" required>
+                <button id="uyeKitaplariniGetir">Kitapları Getir</button>
+            </div>
+            <div id="uyeKitaplari">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ISBN</th>
+                            <th>Başlık</th>
+                            <th>Yazar</th>
+                            <th>Yayın Yılı</th>
+                            <th>Tür</th>
+                        </tr>
+                    </thead>
+                    <tbody id="uyeKitaplariTablosu">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://localhost:7033/api/Kutuphane';
+
+        // Mesaj gösterme fonksiyonu
+        function showMessage(message, isSuccess = true) {
+            const msgElement = document.getElementById('message');
+            msgElement.textContent = message;
+            msgElement.className = isSuccess ? 'msg success' : 'msg error';
+            msgElement.style.display = 'block';
+
+            // 15 saniye sonra mesajı gizle
+            setTimeout(() => {
+                msgElement.style.display = 'none';
+            }, 15000);
+        }
+
+        //hata yakalama
+        async function apiFetch(url, options = {}) {
+            try {
+                const response = await fetch(url, options);
+
+                const text = await response.text();
+
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    console.error('JSON parse edilemedi:', e);
+                    console.error('Alınan text:', text);
+                    throw new Error(`API yanıtı JSON formatında değil. Durum: ${response.status}`);
+                }
+
+                if (!response.ok) {
+                    throw new Error(data.message || `API hatası: ${response.status}`);
+                }
+
+                return data;
+            } catch (error) {
+                console.error('API isteği hatası:', error);
+                showMessage(`Hata: ${error.message}`, false);
+                throw error;
+            }
+        }
+
+        // Tablar arası geçiş
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Aktif tab'ı değiştir
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // İlgili içeriği göster
+                const tabId = tab.dataset.tab;
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+
+        // Kitap Ekle
+        document.getElementById('kitapForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const kitap = {
+                isbn: parseInt(document.getElementById('isbn').value),
+                baslik: document.getElementById('baslik').value,
+                yazar: document.getElementById('yazar').value,
+                yayinYili: parseInt(document.getElementById('yayinYili').value), // Doğrudan sayı olarak gönderiyoruz
+                kitapTuru: document.getElementById('kitapTuru').value,
+            };
+
+            try {
+                const data = await apiFetch(`${API_URL}/kitap`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(kitap)
+                });
+
+                showMessage('Kitap başarıyla eklendi.');
+                document.getElementById('kitapForm').reset();
+            } catch (error) {
+            }
+        });
+
+        // Üye Ekle
+        document.getElementById('uyeForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const uye = {
+                ad: document.getElementById('ad').value,
+                soyad: document.getElementById('soyad').value
+            };
+
+            try {
+                const data = await apiFetch(`${API_URL}/uye`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(uye)
+                });
+
+                showMessage(`ÜYE NUMARANIZ: ${data.uye.uyeNo} - Üye başarıyla eklendi.`);
+                document.getElementById('uyeForm').reset();
+            } catch (error) {
+            }
+        });
+
+        // Ödünç/İade İşlemi
+        document.getElementById('oduncForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const islem = {
+                uyeNo: parseInt(document.getElementById('uyeNo').value),
+                isbn: parseInt(document.getElementById('kitapISBN').value)
+            };
+
+            const islemTipi = document.getElementById('islemTipi').value;
+
+            try {
+                const data = await apiFetch(`${API_URL}/${islemTipi}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(islem)
+                });
+
+                showMessage(data.message || 'İşlem başarıyla gerçekleştirildi.');
+                document.getElementById('oduncForm').reset();
+            } catch (error) {
+            }
+        });
+
+        // Kitapları Listele
+        async function getKitaplar() {
+            try {
+                const kitaplar = await apiFetch(`${API_URL}/kitaplar`);
+
+                const tbody = document.getElementById('kitaplarTablosu');
+                tbody.innerHTML = '';
+
+                if (kitaplar.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Henüz kitap bulunmamaktadır.</td></tr>';
+                    return;
+                }
+
+                kitaplar.forEach(kitap => {
+                    const tr = document.createElement('tr');
+
+
+                    let durumText = '';
+                    let durumClass = '';
+
+                    switch (kitap.durum) {
+                        case 0:
+                            durumText = 'Ödünç Alınabilir';
+                            durumClass = 'durum-mevcut';
+                            break;
+                        case 1:
+                            durumText = 'Ödünçte';
+                            durumClass = 'durum-oduncte';
+                            break;
+                        case 2:
+                            durumText = 'Mevcut Değil';
+                            durumClass = 'durum-bulunmuyor';
+                            break;
+                    }
+
+                    const yayinTarihi = kitap.yayinYili;
+
+
+                    tr.innerHTML = `
+                <td>${kitap.isbn}</td>
+                <td>${kitap.baslik}</td>
+                <td>${kitap.yazar}</td>
+                <td>${yayinTarihi}</td>
+                <td>${kitap.kitapTuru}</td>
+                <td><span class="status-badge ${durumClass}">${durumText}</span></td>
+            `;
+
+                    tbody.appendChild(tr);
+                });
+
+            } catch (error) {
+            }
+        }
+
+        document.getElementById('refreshKitaplar').addEventListener('click', getKitaplar);
+
+        // Üye Kitaplarını Getir
+        document.getElementById('uyeKitaplariniGetir').addEventListener('click', async function () {
+            const uyeNo = document.getElementById('uyeNoSorgu').value;
+            if (!uyeNo) {
+                showMessage('Lütfen üye numaranızı girin, üye numaranız yoksa üye olunuz.', false);
+                return;
+            }
+
+            try {
+                const kitaplar = await apiFetch(`${API_URL}/uye/${uyeNo}/kitaplar`);
+
+                const tbody = document.getElementById('uyeKitaplariTablosu');
+                tbody.innerHTML = '';
+
+                if (kitaplar.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center;"> ${uyeNo} üye numaralı üyenin ödünç aldığı kitap bulunmamaktadır.</td></tr>`;
+                    return;
+                }
+
+                kitaplar.forEach(kitap => {
+                    const tr = document.createElement('tr');
+
+
+
+                    const yayinTarihi = kitap.yayinYili;
+
+                    tr.innerHTML = `
+                <td>${kitap.isbn}</td>
+                <td>${kitap.baslik}</td>
+                <td>${kitap.yazar}</td>
+                <td>${yayinTarihi}</td>
+                <td>${kitap.kitapTuru}</td>
+            `;
+
+                    tbody.appendChild(tr);
+                });
+
+            } catch (error) {
+            }
+        });
+
+        window.addEventListener('load', getKitaplar);
+
+    </script>
+</body>
+
+</html>
