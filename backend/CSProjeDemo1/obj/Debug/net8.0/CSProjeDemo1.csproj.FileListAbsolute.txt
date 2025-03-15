@@ -1,0 +1,13 @@
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\bin\Debug\net8.0\CSProjeDemo1.deps.json
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\bin\Debug\net8.0\CSProjeDemo1.dll
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\bin\Debug\net8.0\CSProjeDemo1.pdb
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\CSProjeDemo1.csproj.AssemblyReference.cache
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\CSProjeDemo1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\CSProjeDemo1.AssemblyInfoInputs.cache
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\CSProjeDemo1.AssemblyInfo.cs
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\CSProjeDemo1.csproj.CoreCompileInputs.cache
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\CSProjeDemo1.sourcelink.json
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\CSProjeDemo1.dll
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\refint\CSProjeDemo1.dll
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\CSProjeDemo1.pdb
+C:\Users\danye\Source\Repos\CSProjeDemo1\backend\CSProjeDemo1\obj\Debug\net8.0\ref\CSProjeDemo1.dll
